@@ -1,9 +1,10 @@
 import "./App.scss";
 import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import CampaignList from "./components/CampaignList/CampaignList";
 import axios from "axios";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function App() {
   const [campaigns, setCampaigns] = useState(null);
@@ -21,14 +22,24 @@ function App() {
 
   return campaigns ? (
     <>
-      <Header />
-      <Container>
-        <h1>Campaigns</h1>
-        <CampaignList campaigns={campaigns} />
-      </Container>
+      <Router>
+        <Header />
+        <Switch>
+          <Container>
+            <Route exact path="/">
+              <CampaignList campaigns={campaigns} />
+            </Route>
+            <Route path="/campaigns/:id">{/* <About /> */}</Route>
+          </Container>
+        </Switch>
+      </Router>
     </>
   ) : (
-    <>Loading...</>
+    <>
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </>
   );
 }
 

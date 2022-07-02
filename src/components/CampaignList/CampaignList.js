@@ -1,14 +1,13 @@
 import React from "react";
 import CampaignCard from "../CampaignCard/CampaignCard";
 
-const CampaignList = ({campaigns}) => {
+const CampaignList = ({ campaigns }) => {
   return (
-    
     <>
-    {campaigns.map((campaign)=>{
-      return <CampaignCard campaign={campaign}></CampaignCard>
-    })}
-      
+      <h1>Campaigns</h1>
+      {campaigns.map((campaign) => {
+        return <CampaignCard campaign={campaign}></CampaignCard>;
+      })}
     </>
   );
 };
