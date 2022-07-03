@@ -1,6 +1,7 @@
 import React from "react";
 import CampaignCard from "../CampaignCard/CampaignCard";
 import { Col, Row, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const CampaignList = ({ campaigns }) => {
   return (
@@ -10,7 +11,9 @@ const CampaignList = ({ campaigns }) => {
       </Row>
       <Row>
         <h1>
-          <Button variant="success">Create Your Campaign!</Button>
+          <Link to="/new">
+            <Button variant="success">Create Your Campaign!</Button>
+          </Link>
         </h1>
       </Row>
       <Row>
