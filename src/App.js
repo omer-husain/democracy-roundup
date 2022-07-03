@@ -8,6 +8,7 @@ import axios from "axios";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CreateCampaign from "./components/CreateCampaign/CreateCampaign";
 import UserLogin from "./components/UserLogin/UserLogin";
+import UserSignup from "./components/UserSignup/UserSignup";
 
 function App() {
   const [campaigns, setCampaigns] = useState(null);
@@ -40,6 +41,9 @@ function App() {
             </Route>
             <Route exact path="/login">
               <UserLogin />
+            </Route>
+            <Route exact path="/signup">
+              <UserSignup />
             </Route>
 
             <Route path="/campaigns/:id">
