@@ -1,12 +1,19 @@
 import "./UserSignup.scss";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import MyVerticallyCenteredModal from "../MyVerticallyCenteredModal/MyVerticallyCenteredModal";
 
 import React from "react";
 
 const UserSignup = () => {
+  const [redirect, setRedirect] = useState(false);
+  const [resApi, setResApi] = useState({
+    redirectUrl: "",
+    redirectMessage: "",
+  });
   let history = useHistory();
+  const [modalShow, setModalShow] = useState(false);
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -20,12 +27,26 @@ const UserSignup = () => {
         userInfo,
       });
       console.log(response);
+      setResApi({
+        redirectUrl: response.data.redirectUrl,
+        redirectMessage: response.data.redirectMessage,
+      });
+
+      setModalShow(true);
       setUserInfo({ username: "", email: "", password: "" });
-      history.push(response.data.redirectUrl);
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (!modalShow && redirect) {
+      history.push({
+        pathname: resApi.redirectUrl,
+        state: { message: resApi.redirectMessage },
+      });
+    }
+  }, [redirect]);
 
   const handleChange = (event) => {
     setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
@@ -100,6 +121,15 @@ const UserSignup = () => {
           </div>
         </div>
       </div>
+      <MyVerticallyCenteredModal
+        titleModal={userInfo.username}
+        message={`Successfully Created`}
+        show={modalShow}
+        onHide={() => {
+          setModalShow(false);
+          setRedirect(true);
+        }}
+      />
     </div>
   );
 };
