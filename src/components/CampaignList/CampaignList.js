@@ -2,21 +2,16 @@ import React, { useEffect } from "react";
 import CampaignCard from "../CampaignCard/CampaignCard";
 import { Col, Row, Button, Alert } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
 import AlertDismissible from "../AlertDismissible/AlertDismissible";
-
-
 
 const CampaignList = ({ campaigns }) => {
   const location = useLocation();
 
-  const { message } = (location && location.state) || {};
+  const { message, about } = (location && location.state) || {};
 
   return (
     <>
-      {message && (
-        <AlertDismissible whatHappened={"Account Created"} message={message} />
-      )}
+      {message && <AlertDismissible whatHappened={about} message={message} />}
       <Row>
         <h1>Campaigns</h1>
       </Row>

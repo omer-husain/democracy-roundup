@@ -43,7 +43,7 @@ const UserSignup = () => {
     if (!modalShow && redirect) {
       history.push({
         pathname: resApi.redirectUrl,
-        state: { message: resApi.redirectMessage },
+        state: { message: resApi.redirectMessage, about: "Account Created" },
       });
     }
   }, [redirect]);

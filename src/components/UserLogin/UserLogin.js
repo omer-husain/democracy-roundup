@@ -1,55 +1,105 @@
 import "./UserLogin.scss";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import React from "react";
 
 const UserLogin = () => {
+  const [redirect, setRedirect] = useState(false);
+  const [resApi, setResApi] = useState({
+    redirectUrl: "",
+    redirectMessage: "",
+  });
+  let history = useHistory();
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      let response = await axios.post("http://localhost:8080/login", {
+        username: userInfo.username,
+        password: userInfo.password,
+      });
+      console.log(response);
+      setResApi({
+        redirectUrl: response.data.redirectUrl,
+        redirectMessage: response.data.redirectMessage,
+      });
+
+      setUserInfo({ username: "", password: "" });
+      setRedirect(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (redirect) {
+      history.push({
+        pathname: resApi.redirectUrl,
+        state: { message: resApi.redirectMessage, about: "Logged In" },
+      });
+    }
+  }, [redirect]);
+
+  const handleChange = (event) => {
+    setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
+  };
+
   return (
-    <div class="container d-flex justify-content-center align-items-center mt-5">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
-          <div class="card shadow">
+    <div className="container d-flex justify-content-center align-items-center mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+          <div className="card shadow">
             <img
               src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
               alt=""
-              class="card-img-top"
+              className="card-img-top"
             />
-            <div class="card-body">
-              <h5 class="card-title">Login</h5>
+            <div className="card-body">
+              <h5 className="card-title">Login</h5>
               <form
-                action="http://localhost:8080/login"
-                method="POST"
-                class="validated-form"
+                onSubmit={handleSubmit}
+                className="validated-form"
                 novalidate
               >
-                <div class="mb-3">
-                  <label class="form-label" for="username">
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="username">
                     Username
                   </label>
                   <input
-                    class="form-control"
+                    value={userInfo.username}
+                    onChange={handleChange}
+                    className="form-control"
                     type="text"
                     id="username"
                     name="username"
                     autofocus
                     required
                   />
-                  <div class="valid-feedback">Looks good!</div>
+                  <div className="valid-feedback">Looks good!</div>
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label" for="password">
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="password">
                     Password
                   </label>
                   <input
-                    class="form-control"
+                    className="form-control"
+                    value={userInfo.password}
+                    onChange={handleChange}
                     type="password"
                     id="password"
                     name="password"
                     required
                   />
-                  <div class="valid-feedback">Looks good!</div>
+                  <div className="valid-feedback">Looks good!</div>
                 </div>
-                <button class="btn btn-success btn-block">Login</button>
+                <button className="btn btn-success btn-block">Login</button>
               </form>
             </div>
           </div>

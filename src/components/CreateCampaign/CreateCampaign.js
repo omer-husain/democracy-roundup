@@ -47,7 +47,7 @@ const CreateCampaign = () => {
               class="form-control"
               type="text"
               id="location"
-              name="campground[issue]"
+              name="campaign[issue]"
               required
             />
             <div class="valid-feedback">Looks good!</div>
