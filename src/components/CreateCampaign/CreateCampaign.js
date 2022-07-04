@@ -8,11 +8,10 @@ const CreateCampaign = () => {
       <h1 class="text-center">Create New Campaign</h1>
       <div class="col-md-6 offset-md-3">
         <form
-          action="/campaigns"
+          action="http://localhost:8080/campaigns"
           method="POST"
           novalidate
           class="validated-form"
-          enctype="multipart/form-data"
         >
           <div class="mb-3">
             <label class="form-label" for="title">

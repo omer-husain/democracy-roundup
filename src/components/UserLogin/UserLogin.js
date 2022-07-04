@@ -16,7 +16,7 @@ const UserLogin = () => {
             <div class="card-body">
               <h5 class="card-title">Login</h5>
               <form
-                action="/login"
+                action="http://localhost:8080/login"
                 method="POST"
                 class="validated-form"
                 novalidate
