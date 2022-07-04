@@ -12,7 +12,7 @@ const CampaignCard = ({ campaign }) => {
         <Card.Header className="badges">
           <div>
             <Badge bg="warning">{campaign.issue}</Badge>{" "}
-            <Badge bg="info">Supporters: {campaign.supporters.length}</Badge>{" "}
+            <Badge bg="info">Supporters: {0}</Badge>{" "}
           </div>
         </Card.Header>
         <Card.Body>

@@ -1,9 +1,10 @@
 import React from "react";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Header.scss";
 
-const Header = () => {
+const Header = ({ login }) => {
+  console.log(login);
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
@@ -29,7 +30,17 @@ const Header = () => {
           </Nav>
           <Nav>
             <Navbar.Text>
-              Signed in as: <a href="#login">Mark Otto</a>
+              {login.loggedIn ? (
+                <>
+                  Signed in as:{" "}
+                  <Badge pill bg="primary">
+                    {login.username}
+                  </Badge>{" "}
+                  <Link to="/logout"> Logout </Link>
+                </>
+              ) : (
+                <Link to="/login"> Login </Link>
+              )}
             </Navbar.Text>
           </Nav>
         </Navbar.Collapse>

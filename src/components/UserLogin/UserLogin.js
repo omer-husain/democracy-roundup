@@ -3,8 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const UserLogin = () => {
-  // axios.defaults.withCredentials = true;
+const UserLogin = ({ isLoggedIn }) => {
   const [redirect, setRedirect] = useState(false);
   const [resApi, setResApi] = useState({
     redirectUrl: "",
@@ -41,6 +40,8 @@ const UserLogin = () => {
         redirectUrl: response.data.redirectUrl,
         redirectMessage: response.data.redirectMessage,
       });
+
+      isLoggedIn({ loggedIn: true, username: userInfo.username });
 
       setUserInfo({ username: "", password: "" });
       setRedirect(true);

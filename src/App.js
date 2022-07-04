@@ -12,6 +12,11 @@ import UserSignup from "./components/UserSignup/UserSignup";
 
 function App() {
   const [campaigns, setCampaigns] = useState(null);
+  const [loginData, setLoginData] = useState({});
+
+  function isloggedIn(loginData) {
+    setLoginData(loginData);
+  }
 
   const fetchCampaigns = async () => {
     let response = await axios.get("http://localhost:8080/campaigns");
@@ -19,15 +24,24 @@ function App() {
     setCampaigns(response.data);
   };
 
+ 
+
   useEffect(() => {
     console.log("fetch campaigns was called");
     fetchCampaigns();
   }, []);
 
+
+  useEffect(() => {
+
+
+  }, [loginData]);
+
+
   return campaigns ? (
     <>
       <Router>
-        <Header />
+        <Header login={loginData} />
         <Switch>
           <Container>
             <Route exact path="/">
@@ -40,10 +54,10 @@ function App() {
               <CreateCampaign />
             </Route>
             <Route exact path="/login">
-              <UserLogin />
+              <UserLogin isLoggedIn={isloggedIn} />
             </Route>
             <Route exact path="/signup">
-              <UserSignup />
+              <UserSignup isLoggedIn={isloggedIn} />
             </Route>
 
             <Route path="/campaigns/:id">
