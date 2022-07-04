@@ -3,9 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import React from "react";
-
 const UserLogin = () => {
+  // axios.defaults.withCredentials = true;
   const [redirect, setRedirect] = useState(false);
   const [resApi, setResApi] = useState({
     redirectUrl: "",
@@ -19,12 +18,25 @@ const UserLogin = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const config = {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     try {
-      let response = await axios.post("http://localhost:8080/login", {
-        username: userInfo.username,
-        password: userInfo.password,
-      });
+      let response = await axios.post(
+        "http://localhost:8080/login",
+        {
+          username: userInfo.username,
+          password: userInfo.password,
+        },
+        config
+      );
       console.log(response);
+
       setResApi({
         redirectUrl: response.data.redirectUrl,
         redirectMessage: response.data.redirectMessage,

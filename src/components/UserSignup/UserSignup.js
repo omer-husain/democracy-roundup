@@ -20,11 +20,17 @@ const UserSignup = () => {
     password: "",
   });
 
+  const instance = axios.create({
+    withCredentials: true,
+  });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      let response = await axios.post("http://localhost:8080/register", {
-        userInfo,
+      let response = await instance.post("http://localhost:8080/register", {
+        username: userInfo.username,
+        email: userInfo.email,
+        password: userInfo.password,
       });
       console.log(response);
       setResApi({
