@@ -14,6 +14,8 @@ function App() {
   const [campaigns, setCampaigns] = useState(null);
   const [loginData, setLoginData] = useState({});
 
+
+  // .username    .loggedIn
   function isloggedIn(loginData) {
     setLoginData(loginData);
   }
@@ -45,7 +47,7 @@ function App() {
         <Switch>
           <Container>
             <Route exact path="/">
-              <CampaignList campaigns={campaigns} />
+              <CampaignList  campaigns={campaigns} />
             </Route>
             <Route exact path="/campaigns">
               <CampaignList campaigns={campaigns} />
@@ -62,7 +64,7 @@ function App() {
 
             <Route path="/campaigns/:id">
               {" "}
-              <CampaignPage />
+              <CampaignPage user={loginData} />
             </Route>
           </Container>
         </Switch>

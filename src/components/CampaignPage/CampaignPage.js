@@ -6,7 +6,7 @@ import { Row, Col } from "react-bootstrap";
 import { Card, Button } from "react-bootstrap";
 import "./CampaignPage.scss";
 
-const CampaignPage = () => {
+const CampaignPage = ({ user }) => {
   let params = useParams();
   const [campaign, setCampaign] = useState(null);
   const [lattitude, setLattitude] = useState(null);
@@ -43,6 +43,25 @@ const CampaignPage = () => {
     setReps(response.data.objects);
   };
 
+  const config = {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const supportHandler = async () => {
+    let response = await axios.post(
+      `http://localhost:8080/campaigns/${params.id}/supporters/`,
+      {
+        supporter: user.username,
+      },
+      config
+    );
+
+    console.log(response);
+  };
+
   useEffect(() => {
     console.log("fetch selected campaign was called");
     fetchSelectedCampaign();
@@ -66,6 +85,7 @@ const CampaignPage = () => {
           <p>{campaign.description}</p>
           <Row>
             <h2>Supporters</h2>
+            <Button onClick={supportHandler}>Support This Campaign</Button>
           </Row>
           <Row>
             <h2>Comments</h2>
@@ -91,7 +111,9 @@ const CampaignPage = () => {
                 <Card.Img variant="top" src={reps[18].photo_url} />
                 <Card.Body>
                   <Card.Title>{`${reps[18].elected_office} ${reps[18].name}`}</Card.Title>
-                  <Card.Link href={`mailto:${reps[18].email}`}>Email: {`${reps[18].email}`}</Card.Link>
+                  <Card.Link href={`mailto:${reps[18].email}`}>
+                    Email: {`${reps[18].email}`}
+                  </Card.Link>
                   <a href={reps[18].url}>
                     <Button variant="primary">Website</Button>
                   </a>
