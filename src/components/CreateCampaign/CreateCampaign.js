@@ -13,6 +13,23 @@ const CreateCampaign = () => {
     redirectUrl: "",
     redirectMessage: "",
   });
+
+  const options = [
+    { label: "", value: "" },
+    { label: "Jobs - Economy", value: "jobs-economy" },
+    { label: "Healthcare", value: "healthcare" },
+    { label: "Inflation", value: "inflation" },
+    { label: "Foreign Policy", value: "foreign-policy" },
+    { label: "Environment", value: "environment" },
+    { label: "Freedom of Speech", value: "freedom-speech" },
+    { label: "Housing", value: "housing" },
+    { label: "Debt", value: "debt" },
+    { label: "Covid", value: "covid" },
+    { label: "Crime /Safety", value: "crime-safety" },
+    { label: "Transportation", value: "transportation" },
+  ];
+
+  // const [value, setValue] = useState("");
   let history = useHistory();
 
   const [campaign, setCampaign] = useState({
@@ -25,6 +42,14 @@ const CreateCampaign = () => {
   const handleChange = (event) => {
     setCampaign({ ...campaign, [event.target.name]: event.target.value });
   };
+
+  const handleIssueChange = (event) => {
+    setCampaign({ ...campaign, issue: event.target.value });
+  };
+
+  // const handleIssueChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -113,10 +138,14 @@ const CreateCampaign = () => {
             <div className="valid-feedback">Looks good!</div>
           </div>
           <div className="mb-3">
-            <label className="form-label" for="issue">
-              Issue
-            </label>
-            <input
+            <Dropdown
+              label="What do we eat?"
+              options={options}
+              value={campaign.issue}
+              onChange={handleIssueChange}
+            />
+
+            {/* <input
               className="form-control"
               type="text"
               id="issue"
@@ -124,9 +153,11 @@ const CreateCampaign = () => {
               onChange={handleChange}
               value={campaign.issue}
               required
-            />
+            /> */}
+
             <div className="valid-feedback">Looks good!</div>
           </div>
+          {campaign.issue && <span>Issue Selected: {campaign.issue}</span>}
           <div className="mb-3">
             <label className="form-label" for="date">
               When does your campaign end
@@ -144,6 +175,19 @@ const CreateCampaign = () => {
         <a href="/campaigns">Back to All Campaigns</a>
       </div>
     </div>
+  );
+};
+
+const Dropdown = ({ label, value, options, onChange }) => {
+  return (
+    <label>
+      {label}
+      <select value={value} onChange={onChange}>
+        {options.map((option) => (
+          <option value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </label>
   );
 };
 
