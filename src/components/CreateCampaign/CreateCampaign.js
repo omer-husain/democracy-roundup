@@ -99,15 +99,6 @@ const CreateCampaign = () => {
             />
             <div class="valid-feedback">Looks good!</div>
           </div>
-
-          {/* <div class="mb-3">
-                <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="campground[image]" required>
-                <div class="valid-feedback"> 
-                    Looks good!
-                </div>
-            </div> */}
-
           <div class="mb-3">
             <button class="btn btn-success">Create Campaign</button>
           </div>
