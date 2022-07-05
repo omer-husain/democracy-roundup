@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import MyVerticallyCenteredModal from "../MyVerticallyCenteredModal/MyVerticallyCenteredModal";
+import canadaImage from "../../images/canada2.jpg";
 
 import React from "react";
 
@@ -63,11 +64,7 @@ const UserSignup = () => {
       <div className="row">
         <div className="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
           <div className="card shadow">
-            <img
-              src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
-              alt=""
-              className="card-img-top"
-            />
+            <img src={canadaImage} alt="" className="card-img-top" />
             <div className="card-body">
               <h5 className="card-title">Sign Up</h5>
               <form

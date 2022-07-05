@@ -9,11 +9,11 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CreateCampaign from "./components/CreateCampaign/CreateCampaign";
 import UserLogin from "./components/UserLogin/UserLogin";
 import UserSignup from "./components/UserSignup/UserSignup";
+import Landing from "./components/Landing/Landing";
 
 function App() {
   const [campaigns, setCampaigns] = useState(null);
   const [loginData, setLoginData] = useState({});
-
 
   // .username    .loggedIn
   function isloggedIn(loginData) {
@@ -26,19 +26,12 @@ function App() {
     setCampaigns(response.data);
   };
 
- 
-
   useEffect(() => {
     console.log("fetch campaigns was called");
     fetchCampaigns();
   }, []);
 
-
-  useEffect(() => {
-
-
-  }, [loginData]);
-
+  useEffect(() => {}, [loginData]);
 
   return campaigns ? (
     <>
@@ -47,7 +40,7 @@ function App() {
         <Switch>
           <Container>
             <Route exact path="/">
-              <CampaignList  campaigns={campaigns} />
+              <Landing />
             </Route>
             <Route exact path="/campaigns">
               <CampaignList campaigns={campaigns} />
