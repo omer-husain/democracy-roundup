@@ -14,13 +14,25 @@ const CreateCampaign = () => {
     redirectMessage: "",
   });
   let history = useHistory();
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    password: "",
+
+  const [campaign, setCampaign] = useState({
+    title: "",
+    description: "",
+    issue: "",
+    expiryDate: dateData,
   });
+
+  const handleChange = (event) => {
+    setCampaign({ ...campaign, [event.target.name]: event.target.value });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setCampaign({ ...campaign, expiryDate: dateData });
+    console.log(
+      `This is the state of campaign at submission ${JSON.stringify(campaign)}`
+    );
 
     const config = {
       withCredentials: true,
@@ -31,21 +43,25 @@ const CreateCampaign = () => {
 
     try {
       let response = await axios.post(
-        "http://localhost:8080/login",
-        {
-          username: userInfo.username,
-          password: userInfo.password,
-        },
+        "http://localhost:8080/campaigns",
+        { campaign: campaign },
         config
       );
+
+      console.log("the request was successful");
       console.log(response);
 
-      setResApi({
-        redirectUrl: response.data.redirectUrl,
-        redirectMessage: response.data.redirectMessage,
-      });
+      // setResApi({
+      //   redirectUrl: response.data.redirectUrl,
+      //   redirectMessage: response.data.redirectMessage,
+      // });
 
-      setUserInfo({ username: "", password: "" });
+      setCampaign({
+        title: "",
+        description: "",
+        issue: "",
+        expiryDate: dateData,
+      });
       setRedirect(true);
     } catch (err) {
       console.log(err);
@@ -58,18 +74,14 @@ const CreateCampaign = () => {
 
   useEffect(() => {
     console.log(dateData);
+    setCampaign({ ...campaign, expiryDate: dateData });
   }, [dateData]);
 
   return (
     <div className="row createCampaign">
       <h1 className="text-center">Create New Campaign</h1>
       <div className="col-md-6 offset-md-3">
-        <form
-          action="http://localhost:8080/campaigns"
-          method="POST"
-          novalidate
-          className="validated-form"
-        >
+        <form onSubmit={handleSubmit} novalidate className="validated-form">
           <div className="mb-3">
             <label className="form-label" for="title">
               Title
@@ -78,7 +90,9 @@ const CreateCampaign = () => {
               className="form-control"
               type="text"
               id="title"
-              name="campaign[title]"
+              name="title"
+              value={campaign.title}
+              onChange={handleChange}
               required
             />
             <div className="valid-feedback">Looks good!</div>
@@ -91,7 +105,9 @@ const CreateCampaign = () => {
               className="form-control"
               type="text"
               id="description"
-              name="campaign[description]"
+              name="description"
+              value={campaign.description}
+              onChange={handleChange}
               required
             ></textarea>
             <div className="valid-feedback">Looks good!</div>
@@ -103,15 +119,17 @@ const CreateCampaign = () => {
             <input
               className="form-control"
               type="text"
-              id="location"
-              name="campaign[issue]"
+              id="issue"
+              name="issue"
+              onChange={handleChange}
+              value={campaign.issue}
               required
             />
             <div className="valid-feedback">Looks good!</div>
           </div>
           <div className="mb-3">
             <label className="form-label" for="date">
-              When does campaign end
+              When does your campaign end
             </label>
             <TableDatePicker
               transferDateFromCalender={transferDateFromCalender}

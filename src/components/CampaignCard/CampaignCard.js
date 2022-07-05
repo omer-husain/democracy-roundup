@@ -17,7 +17,7 @@ const CampaignCard = ({ campaign }) => {
         </Card.Header>
         <Card.Body>
           <Card.Title>{campaign.title}</Card.Title>
-          <Card.Text>{`${campaign.description.slice(0, 200)}...`}</Card.Text>
+          <Card.Text>{`${campaign.description}...`}</Card.Text>
           <Link to={`/campaigns/${campaign._id}`}>
             <Button variant="primary">Open Campaign Page</Button>
           </Link>
