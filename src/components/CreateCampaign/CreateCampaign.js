@@ -2,10 +2,12 @@ import "./CreateCampaign.scss";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import TableDatePicker from "../TableDatePicker/TableDatePicker";
 
 import React from "react";
 
 const CreateCampaign = () => {
+  const [dateData, setDateData] = useState();
   const [redirect, setRedirect] = useState(false);
   const [resApi, setResApi] = useState({
     redirectUrl: "",
@@ -50,59 +52,77 @@ const CreateCampaign = () => {
     }
   };
 
+  const transferDateFromCalender = (calenderDate) => {
+    setDateData(calenderDate);
+  };
+
+  useEffect(() => {
+    console.log(dateData);
+  }, [dateData]);
+
   return (
-    <div class="row">
-      <h1 class="text-center">Create New Campaign</h1>
-      <div class="col-md-6 offset-md-3">
+    <div className="row createCampaign">
+      <h1 className="text-center">Create New Campaign</h1>
+      <div className="col-md-6 offset-md-3">
         <form
           action="http://localhost:8080/campaigns"
           method="POST"
           novalidate
-          class="validated-form"
+          className="validated-form"
         >
-          <div class="mb-3">
-            <label class="form-label" for="title">
+          <div className="mb-3">
+            <label className="form-label" for="title">
               Title
             </label>
             <input
-              class="form-control"
+              className="form-control"
               type="text"
               id="title"
               name="campaign[title]"
               required
             />
-            <div class="valid-feedback">Looks good!</div>
+            <div className="valid-feedback">Looks good!</div>
           </div>
-          <div class="mb-3">
-            <label class="form-label" for="description">
+          <div className="mb-3">
+            <label className="form-label" for="description">
               Description
             </label>
             <textarea
-              class="form-control"
+              className="form-control"
               type="text"
               id="description"
               name="campaign[description]"
               required
             ></textarea>
-            <div class="valid-feedback">Looks good!</div>
+            <div className="valid-feedback">Looks good!</div>
           </div>
-          <div class="mb-3">
-            <label class="form-label" for="issue">
+          <div className="mb-3">
+            <label className="form-label" for="issue">
               Issue
             </label>
             <input
-              class="form-control"
+              className="form-control"
               type="text"
               id="location"
               name="campaign[issue]"
               required
             />
-            <div class="valid-feedback">Looks good!</div>
+            <div className="valid-feedback">Looks good!</div>
           </div>
-          <div class="mb-3">
-            <button class="btn btn-success">Create Campaign</button>
+          <div className="mb-3">
+            <label className="form-label" for="date">
+              When does campaign end
+            </label>
+            <TableDatePicker
+              transferDateFromCalender={transferDateFromCalender}
+            />
+            <div className="valid-feedback">Looks good!</div>
+          </div>
+          <div className="mb-3">
+            <button className="btn btn-success">Create Campaign</button>
           </div>
         </form>
+
         <a href="/campaigns">Back to All Campaigns</a>
       </div>
     </div>
