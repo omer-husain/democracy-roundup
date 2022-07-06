@@ -16,6 +16,7 @@ const Header = ({ login }) => {
           <Nav className="me-auto">
             <Nav.Link href="/campaigns">Current Campaigns</Nav.Link>
             <Nav.Link href="/reps">My Representatives</Nav.Link>
+            <Nav.Link href="/new">Create Your Campaign</Nav.Link>
           </Nav>
           <Nav>
             <Navbar.Text>

@@ -3,9 +3,8 @@ import "./Landing.scss";
 
 const Landing = () => {
   return (
-    <div className="d-flex text-center text-white bg-dark">
+    <div className="d-flex text-center text-white">
       <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        
         <main className="px-3">
           <h1>Democracy RoundUp</h1>
           <p className="lead">
@@ -15,9 +14,9 @@ const Landing = () => {
           </p>
           <a
             href="/campaigns"
-            className="btn btn-lg btn-secondary font-weight-bold border-white bg-white"
+            className="btn btn-lg btn-secondary font-weight-bold border-white bg-dark"
           >
-            Get Involved Campaigns
+            Get Involved
           </a>
         </main>
 
