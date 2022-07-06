@@ -3,6 +3,7 @@ import CampaignCard from "../CampaignCard/CampaignCard";
 import { Col, Row, Button, Alert } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import AlertDismissible from "../AlertDismissible/AlertDismissible";
+import "./CampaignList.scss";
 
 const CampaignList = ({ campaigns }) => {
   const location = useLocation();
@@ -10,7 +11,7 @@ const CampaignList = ({ campaigns }) => {
   const { message, about } = (location && location.state) || {};
 
   return (
-    <>
+    <div className="campaigns-list">
       {message && <AlertDismissible whatHappened={about} message={message} />}
       <Row>
         <h1>Campaigns</h1>
@@ -27,7 +28,7 @@ const CampaignList = ({ campaigns }) => {
           return <CampaignCard campaign={campaign}></CampaignCard>;
         })}
       </Row>
-    </>
+    </div>
   );
 };
 
