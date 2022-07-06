@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import TableDatePicker from "../TableDatePicker/TableDatePicker";
+import { Card, Button, Alert } from "react-bootstrap";
 
 import React from "react";
 
@@ -14,29 +15,104 @@ const CreateCampaign = () => {
     redirectMessage: "",
   });
 
+  const [reps, setReps] = useState([]);
+
+  // let baseQuery = `https://represent.opennorth.ca/representatives`;
+  let federalBody = `house-of-commons`;
+  let provincialBody = `ontario-legislature`;
+  // let repLastName = "";
+  // let lastNameQuery = `?last_name=`;
+
+  // let federalQuery = `${baseQuery}/${federalBody}${lastNameQuery}${repLastName}`;
+  // let provincialQuery = `${baseQuery}/${provincialBody}${lastNameQuery}${repLastName}`;
+
   const options = [
-    { label: "", value: "" },
-    { label: "Jobs - Economy", value: "jobs-economy" },
-    { label: "Healthcare", value: "healthcare" },
-    { label: "Inflation", value: "inflation" },
-    { label: "Foreign Policy", value: "foreign-policy" },
-    { label: "Environment", value: "environment" },
-    { label: "Freedom of Speech", value: "freedom-speech" },
-    { label: "Housing", value: "housing" },
-    { label: "Debt", value: "debt" },
+    {
+      label: "",
+      value: "",
+    },
+    {
+      label: "Jobs - Economy",
+      value: "jobs-economy",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Healthcare",
+      value: "healthcare",
+      federalRepLastName: "Duclos",
+      provincialRepLastName: "Jones",
+    },
+    {
+      label: "Inflation",
+      value: "inflation",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Foreign Policy",
+      value: "foreign-policy",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Environment",
+      value: "environment",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Freedom of Speech",
+      value: "freedom-speech",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Housing",
+      value: "housing",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Debt",
+      value: "debt",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
     { label: "Covid", value: "covid" },
-    { label: "Crime /Safety", value: "crime-safety" },
-    { label: "Transportation", value: "transportation" },
+    {
+      label: "Crime /Safety",
+      value: "crime-safety",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
+    {
+      label: "Transportation",
+      value: "transportation",
+      federalRepLastName: "Freeland",
+      provincialRepLastName: "Fedeli",
+    },
   ];
 
-  // const [value, setValue] = useState("");
+  const fetchRepData = async (repLastName, legislature) => {
+    let response = await axios.get(
+      `https://represent.opennorth.ca/representatives/${legislature}/?last_name=${repLastName}`
+    );
+    console.log(response.data.objects);
+    setReps(response.data.objects);
+  };
+
   let history = useHistory();
 
   const [campaign, setCampaign] = useState({
     title: "",
     description: "",
     issue: "",
+    createDate: "",
     expiryDate: dateData,
+    representative: "",
+    legislature: "",
+    repLastName: "",
   });
 
   const handleChange = (event) => {
@@ -102,6 +178,17 @@ const CreateCampaign = () => {
     setCampaign({ ...campaign, expiryDate: dateData });
   }, [dateData]);
 
+  useEffect(() => {
+    let foundOption = options.find((option) => {
+      return option.value === campaign.issue;
+    });
+
+    console.log(foundOption);
+    if (foundOption) {
+      fetchRepData(foundOption.federalRepLastName, federalBody);
+    }
+  }, [campaign.issue]);
+
   return (
     <div className="row createCampaign">
       <h1 className="text-center">Create New Campaign</h1>
@@ -137,26 +224,7 @@ const CreateCampaign = () => {
             ></textarea>
             <div className="valid-feedback">Looks good!</div>
           </div>
-          <div className="mb-3">
-            <Dropdown
-              label="What do we eat?"
-              options={options}
-              value={campaign.issue}
-              onChange={handleIssueChange}
-            />
 
-            {/* <input
-              className="form-control"
-              type="text"
-              id="issue"
-              name="issue"
-              onChange={handleChange}
-              value={campaign.issue}
-              required
-            /> */}
-
-            <div className="valid-feedback">Looks good!</div>
-          </div>
           {campaign.issue && <span>Issue Selected: {campaign.issue}</span>}
           <div className="mb-3">
             <label className="form-label" for="date">
@@ -173,6 +241,63 @@ const CreateCampaign = () => {
         </form>
 
         <a href="/campaigns">Back to All Campaigns</a>
+      </div>
+      <div className="col">
+        <div className="mb-3">
+          <Dropdown
+            label="Please Select Your Area of Concern"
+            options={options}
+            value={campaign.issue}
+            onChange={handleIssueChange}
+          />
+
+          <div className="valid-feedback">Looks good!</div>
+        </div>
+        {campaign.representative ? (
+          <Alert variant={"success"}>
+            You have selected {campaign.representative}
+          </Alert>
+        ) : (
+          <Alert variant={"light"}>
+            You have not selected a Campaign Recipient Yet
+          </Alert>
+        )}
+        {reps.length > 0 && (
+          <>
+            <Card className="card" style={{ width: "18rem" }}>
+              <Card.Img
+                className="card__image"
+                variant="top"
+                src={reps[0].photo_url}
+              />
+              <Card.Body>
+                <Card.Title>{`${reps[0].elected_office} ${reps[0].name}`}</Card.Title>
+                <Card.Link href={`mailto:${reps[0].email}`}>
+                  Email: {`${reps[0].email}`}
+                </Card.Link>
+                <div className="buttonRow">
+                  <a href={reps[0].url}>
+                    <Button variant="primary">Website</Button>
+                  </a>
+
+                  <Button
+                    onClick={() => {
+                      setCampaign({
+                        ...campaign,
+                        representative: reps[0].name,
+                        legislature: reps[0].representative_set_name,
+                        repLastName: reps[0].last_name,
+                      });
+                    }}
+                    variant="success"
+                  >
+                    Select
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </>
+        )}
       </div>
     </div>
   );
