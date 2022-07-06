@@ -10,11 +10,10 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          {props.titleModal}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>{props.titleModal}</h4>
         <p>{props.message}</p>
       </Modal.Body>
       <Modal.Footer>

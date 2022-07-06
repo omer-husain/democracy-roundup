@@ -58,20 +58,20 @@ const CreateCampaign = () => {
     {
       label: "Environment",
       value: "environment",
-      federalRepLastName: "Freeland",
-      provincialRepLastName: "Fedeli",
+      federalRepLastName: "Guilbeault",
+      provincialRepLastName: "Piccini",
     },
     {
       label: "Freedom of Speech",
       value: "freedom-speech",
-      federalRepLastName: "Freeland",
-      provincialRepLastName: "Fedeli",
+      federalRepLastName: "Lametti",
+      provincialRepLastName: "Downey",
     },
     {
       label: "Housing",
       value: "housing",
-      federalRepLastName: "Freeland",
-      provincialRepLastName: "Fedeli",
+      federalRepLastName: "Hussen",
+      provincialRepLastName: "Clark",
     },
     {
       label: "Debt",
@@ -79,18 +79,29 @@ const CreateCampaign = () => {
       federalRepLastName: "Freeland",
       provincialRepLastName: "Fedeli",
     },
-    { label: "Covid", value: "covid" },
+    {
+      label: "Covid",
+      value: "covid",
+      federalRepLastName: "Duclos",
+      provincialRepLastName: "Elliott",
+    },
     {
       label: "Crime /Safety",
       value: "crime-safety",
-      federalRepLastName: "Freeland",
-      provincialRepLastName: "Fedeli",
+      federalRepLastName: "Mendicino",
+      provincialRepLastName: "Kerzner",
     },
     {
       label: "Transportation",
       value: "transportation",
-      federalRepLastName: "Freeland",
-      provincialRepLastName: "Fedeli",
+      federalRepLastName: "Alghabra",
+      provincialRepLastName: "Mulroney",
+    },
+    {
+      label: "Climate",
+      value: "climate",
+      federalRepLastName: "Guilbeault",
+      provincialRepLastName: "Piccini",
     },
   ];
 

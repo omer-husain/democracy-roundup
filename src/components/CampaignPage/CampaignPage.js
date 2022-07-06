@@ -5,13 +5,14 @@ import { Spinner } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
 import { Card, Button } from "react-bootstrap";
 import "./CampaignPage.scss";
+import Moment from "react-moment";
+import MyVerticallyCenteredModal from "../MyVerticallyCenteredModal/MyVerticallyCenteredModal";
 
 const CampaignPage = ({ user }) => {
   let params = useParams();
-  const [campaign, setCampaign] = useState(null);
-  const [lattitude, setLattitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [reps, setReps] = useState(null);
+  const [campaign, setCampaign] = useState({});
+  const [rep, setRep] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
 
   const fetchSelectedCampaign = async () => {
     let response = await axios.get(
@@ -19,28 +20,30 @@ const CampaignPage = ({ user }) => {
     );
     console.log(response.data);
     console.log(params.id);
-    setCampaign(response.data);
+    setCampaign({ ...response.data });
+    console.log(campaign);
   };
 
-  async function getLocation() {
-    if (navigator.geolocation) {
-      await navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  }
+  useEffect(() => {
+    console.log("fetch selected campaign was called");
+    fetchSelectedCampaign();
+  }, []);
 
-  function showPosition(position) {
-    setLattitude(position.coords.latitude);
-    setLongitude(position.coords.longitude);
-  }
+  useEffect(() => {
+    fetchRepData();
+  }, [campaign]);
 
   const fetchRepData = async () => {
+    console.log("fetch rep data was called");
+    const fullName = campaign.representative;
+    const [first, last] = fullName.split(" ");
+    console.log(last);
+
     let response = await axios.get(
-      `https://represent.opennorth.ca/representatives/?point=${lattitude},${longitude}`
+      `https://represent.opennorth.ca/representatives/house-of-commons/?last_name=${last}`
     );
     console.log(response.data.objects);
-    setReps(response.data.objects);
+    setRep({ ...response.data.objects[0] });
   };
 
   const config = {
@@ -55,66 +58,75 @@ const CampaignPage = ({ user }) => {
       `http://localhost:8080/campaigns/${params.id}/supporters/`,
       {
         supporter: user.username,
+        myParamsId: params.id,
       },
       config
     );
 
     console.log(response);
+    setModalShow(true);
   };
 
-  useEffect(() => {
-    console.log("fetch selected campaign was called");
-    fetchSelectedCampaign();
-  }, []);
+  // console.log(campaign, rep);
 
-  useEffect(() => {
-    getLocation();
-    if (lattitude && longitude) {
-      fetchRepData();
-    }
-  }, [lattitude, longitude]);
-
-  return campaign && lattitude && longitude && reps ? (
-    <>
+  return rep ? (
+    <div className="campaign">
       <Row>
-        <h1 class="display-4">{campaign.title}</h1>
+        <h1 class="display-2">{campaign.title}</h1>
       </Row>
       <Row>
-        <Col xs={12} md={6} lg={4}>
-          <h2>Description</h2>
-          <p>{campaign.description}</p>
+        <Col xs={12} md={6} lg={3}>
+          <div className="campaign__description">
+            <h2>Description</h2>
+            <p>{campaign.description}</p>
+          </div>
           <Row>
             <h2>Supporters</h2>
             <Button onClick={supportHandler}>Support This Campaign</Button>
-          </Row>
-          <Row>
-            <h2>Comments</h2>
+            {campaign.supporters.map((supporter) => {
+              return <h1>{supporter.person._id}</h1>;
+            })}
+            \
           </Row>
         </Col>
         <Col>
           <Row>
             <Col xs={12} lg={6}>
               <h2>Letter</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.{" "}
-              </p>
+              <div className="campaign__letter letterpress">
+                <p>
+                  <Moment format="LL" />
+                  <br />
+                  <br /> Hon. {rep.name} <br />
+                  {rep.offices[1].postal && rep.offices[1].postal} <br />
+                  {rep.offices[1].postal && rep.offices[1].tel}
+                  <br />
+                  <br /> Dear Hon. {rep.name}, <br /> My name is{" "}
+                  {campaign.organiser.username} and I am a constituent. I am
+                  writing this letter with a great deal of concern.{" "}
+                  {campaign.description}. We have organised an awarness campaign
+                  and below this letter you will see the names of fellow
+                  supporters and constituents who feel as strongly as I do.
+                  Thank you for taking the time to listen to my concerns, and I
+                  look forward to receiving a response from you on this matter.{" "}
+                  <br />
+                  <br />
+                  Sincerely, {campaign.organiser.username} <br />
+                  {campaign.organiser.email}
+                  {/* (City, Province) (Phone Number){" "} */}
+                </p>
+              </div>
             </Col>
             <Col>
               <h2>Recipient</h2>
               <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={reps[18].photo_url} />
+                <Card.Img variant="top" src={rep.photo_url} />
                 <Card.Body>
-                  <Card.Title>{`${reps[18].elected_office} ${reps[18].name}`}</Card.Title>
-                  <Card.Link href={`mailto:${reps[18].email}`}>
-                    Email: {`${reps[18].email}`}
+                  <Card.Title>{`${rep.elected_office} ${rep.name}`}</Card.Title>
+                  <Card.Link href={`mailto:${rep.email}`}>
+                    Email: {`${rep.email}`}
                   </Card.Link>
-                  <a href={reps[18].url}>
+                  <a href={rep.url}>
                     <Button variant="primary">Website</Button>
                   </a>
                 </Card.Body>
@@ -123,7 +135,15 @@ const CampaignPage = ({ user }) => {
           </Row>
         </Col>
       </Row>
-    </>
+      <MyVerticallyCenteredModal
+        titleModal={"Added Supporter To Campaign"}
+        message={`Thank you, your name will be added to the letter`}
+        show={modalShow}
+        onHide={() => {
+          setModalShow(false);
+        }}
+      />{" "}
+    </div>
   ) : (
     <>
       <Spinner animation="border" role="status">

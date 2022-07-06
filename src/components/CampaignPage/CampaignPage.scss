@@ -1,0 +1,32 @@
+.campaign {
+  color: white;
+
+  &__description {
+    height: 10rem;
+  }
+
+  &__letter {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 0.3rem;
+    color: black;
+    height: fit-content;
+    font-family: "Nixie One", serif;
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+    text-align: left;
+    p {
+      font-family: "Nixie One", serif;
+      color: rgb(131, 95, 95);
+      font-size: 1.2em;
+      text-align: left;
+    }
+  }
+
+  &__supporters {
+  }
+  &__supporters {
+  }
+}
+
+

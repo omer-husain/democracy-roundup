@@ -10,6 +10,7 @@ import CreateCampaign from "./components/CreateCampaign/CreateCampaign";
 import UserLogin from "./components/UserLogin/UserLogin";
 import UserSignup from "./components/UserSignup/UserSignup";
 import Landing from "./components/Landing/Landing";
+import MyRepresentatives from "./components/MyRepresentatives/MyRepresentatives";
 
 function App() {
   const [campaigns, setCampaigns] = useState(null);
@@ -48,6 +49,9 @@ function App() {
             <Route exact path="/new">
               <CreateCampaign />
             </Route>
+            <Route exact path="/reps">
+              <MyRepresentatives />
+            </Route>
             <Route exact path="/login">
               <UserLogin isLoggedIn={isloggedIn} />
             </Route>
@@ -57,7 +61,7 @@ function App() {
 
             <Route path="/campaigns/:id">
               {" "}
-              <CampaignPage user={loginData} />
+              <CampaignPage user={loginData} campaigns={campaigns} />
             </Route>
           </Container>
         </Switch>

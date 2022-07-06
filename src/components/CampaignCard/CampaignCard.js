@@ -5,12 +5,6 @@ import "./CampaignCard.scss";
 import moment from "moment";
 import Moment from "react-moment";
 
-var given = moment("2018-03-10", "YYYY-MM-DD");
-var current = moment().startOf("day");
-moment.duration(given.diff(current)).asDays();
-
-//Difference in number of days
-moment.duration(given.diff(current)).asDays();
 
 const CampaignCard = ({ campaign }) => {
   const handleClick = () => {};
@@ -21,7 +15,7 @@ const CampaignCard = ({ campaign }) => {
         <Card.Header className="badges">
           <div>
             <Badge bg="danger">{campaign.issue}</Badge>{" "}
-            <Badge bg="success">Supporters: {0}</Badge>{" "}
+            <Badge bg="success">Supporters: {campaign.supporters.length}</Badge>{" "}
             <Badge bg="primary">{campaign.representative}</Badge>{" "}
           </div>
         </Card.Header>
