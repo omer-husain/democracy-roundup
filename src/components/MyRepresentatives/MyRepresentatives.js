@@ -44,28 +44,34 @@ const MyRepresentatives = () => {
       `https://represent.opennorth.ca/representatives/?point=${lattitude},${longitude}`
     );
     console.log(response.data.objects);
-    setReps([...response.data.objects]);
+    let filteredList = response.data.objects.filter((item) => {
+      return item.photo_url;
+    });
+    setReps([...filteredList]);
   };
 
   return reps.length > 0 ? (
-    <Row xs={1} md={2} lg={3} className="g-4">
-      {reps.map((rep) => (
-        <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src={rep.photo_url} />
-            <Card.Body>
-              <Card.Title>{`${rep.elected_office} ${rep.name}`}</Card.Title>
-              <Card.Link href={`mailto:${rep.email}`}>
-                Email: {`${rep.email}`}
-              </Card.Link>
-              <a href={rep.url}>
-                <Button variant="primary">Website</Button>
-              </a>
-            </Card.Body>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+    <div className="myreps">
+      <h1>My Representatives</h1>
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {reps.map((rep) => (
+          <Col>
+            <Card style={{ width: "18rem" }}>
+              <Card.Img variant="top" src={rep.photo_url} />
+              <Card.Body>
+                <Card.Title>{`${rep.elected_office} ${rep.name}`}</Card.Title>
+                <Card.Link href={`mailto:${rep.email}`}>
+                  Email: {`${rep.email}`}
+                </Card.Link>
+                <a href={rep.url}>
+                  <Button variant="primary">Website</Button>
+                </a>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </div>
   ) : (
     <>
       <Spinner animation="border" role="status">
